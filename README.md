@@ -71,3 +71,21 @@ Y por ultimo reinicia para que se apliquen los cambios.
 * sddm-silent-theme
 * nwg-look
 * noto-fonts && noto-fonts-emoji
+
+
+## Importantisimo
+Añadir "ILoveCandy" a /etc/pacman.conf al final de Misc option para disfrutar de la verdadera experiencia de Pacman.
+Ejemplo:
+```
+# Misc options
+#UseSyslog
+#Color
+#NoProgressBar
+CheckSpace
+#VerbosePkgLists
+ParallelDownloads = 5
+DownloadUser = alpm
+#DisableSandboxFilesystem
+#DisableSandboxSyscalls
+ILoveCandy
+```
