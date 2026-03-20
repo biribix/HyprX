@@ -1,0 +1,338 @@
+# ╔══════════════════════════════════════════════════════════════════╗
+# ║              Starship — Configuración Personal                   ║
+# ╚══════════════════════════════════════════════════════════════════╝
+
+# ── Opciones globales ─────────────────────────────────────────────────────────
+add_newline          = false
+continuation_prompt  = "[▸▹ ](dimmed white)"
+
+# ── Prompt izquierdo ──────────────────────────────────────────────────────────
+# Línea 1: nix_shell · fill (espacio) · git_metrics
+# Línea 2: duración · host · ip · shlvl · shell · env · jobs · sudo · user · prompt
+format = """
+($nix_shell$container$fill$git_metrics\n)\
+$cmd_duration\
+$hostname\
+$localip\
+$shlvl\
+$shell\
+$env_var\
+$jobs\
+$sudo\
+$username\
+$character"""
+
+# ── Prompt derecho ────────────────────────────────────────────────────────────
+# Directorio · Git · Lenguajes · Herramientas · Sistema
+right_format = """
+$directory\
+$git_branch\
+$git_commit\
+$git_state\
+$git_status\
+$docker_context\
+$package\
+$c\
+$golang\
+$haskell\
+$java\
+$julia\
+$lua\
+$nodejs\
+$python\
+$ruby\
+$rust\
+$swift\
+$deno\
+$dart\
+$elixir\
+$elm\
+$nim\
+$conda\
+$buf\
+$memory_usage\
+$aws\
+$azure\
+$gcloud\
+$openstack\
+$status\
+$os\
+$battery\
+$time"""
+
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+#  PROMPT BASE
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+# ── Carácter principal (❯) ────────────────────────────────────────────────────
+[character]
+format                   = "$symbol "
+success_symbol           = "[◎](bold italic bright-yellow)"
+error_symbol             = "[○](italic purple)"
+vimcmd_symbol            = "[■](italic dimmed green)"
+vimcmd_replace_one_symbol = "◌"
+vimcmd_replace_symbol    = "□"
+vimcmd_visual_symbol     = "▼"
+
+# ── Usuario ───────────────────────────────────────────────────────────────────
+[username]
+format      = "[⭘ $user]($style) "
+style_user  = "bright-yellow bold italic"
+style_root  = "purple bold italic"
+show_always = false
+disabled    = false
+
+# ── Sudo ──────────────────────────────────────────────────────────────────────
+[sudo]
+format   = "[$symbol]($style)"
+symbol   = "⋈┈"
+style    = "bold italic bright-purple"
+disabled = false
+
+# ── Jobs en segundo plano ─────────────────────────────────────────────────────
+[jobs]
+format = "[$symbol$number]($style) "
+symbol = "[▶](blue italic)"
+style  = "white"
+
+# ── IP local (solo en SSH) ────────────────────────────────────────────────────
+[localip]
+format   = " ◯[$localipv4](bold magenta)"
+ssh_only = true
+disabled = false
+
+# ── Relleno (separa izquierda de derecha) ─────────────────────────────────────
+[fill]
+symbol = " "
+
+# ── Variable de entorno (modo vim en shell) ───────────────────────────────────
+[env_var.VIMSHELL]
+format = "[$env_value]($style)"
+style  = "green italic"
+
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+#  DIRECTORIO
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+[directory]
+style               = "italic blue"
+home_symbol         = "⌂"
+truncation_length   = 2
+truncation_symbol   = "□ "
+read_only           = " ◈"
+use_os_path_sep     = true
+format              = '[$path]($style)[$read_only]($read_only_style)'
+# Formato especial cuando estás dentro de un repo git
+repo_root_style     = "bold blue"
+repo_root_format    = '[$before_root_path]($before_repo_root_style)[$repo_root]($repo_root_style)[$path]($style)[$read_only]($read_only_style) [△](bold bright-blue)'
+
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+#  GIT
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+# ── Rama ──────────────────────────────────────────────────────────────────────
+[git_branch]
+format             = " [$branch(:$remote_branch)]($style)"
+symbol             = "[△](bold italic bright-blue)"
+style              = "italic bright-blue"
+truncation_symbol  = "⋯"
+truncation_length  = 11
+ignore_branches    = ["main", "master"]  # no muestra si estás en main/master
+only_attached      = true
+
+# ── Estado del árbol (staged, modified, etc.) ─────────────────────────────────
+[git_status]
+style       = "bold italic bright-blue"
+format      = "([⎪$ahead_behind$staged$modified$untracked$renamed$deleted$conflicted$stashed⎥]($style))"
+ahead       = "[▴│[${count}](bold white)│](italic green)"
+behind      = "[▿│[${count}](bold white)│](italic red)"
+diverged    = "[◇ ▴┤[${ahead_count}](regular white)│▿┤[${behind_count}](regular white)│](italic bright-magenta)"
+staged      = "[▪┤[$count](bold white)│](italic bright-cyan)"
+modified    = "[●◦](italic yellow)"
+untracked   = "[◌◦](italic bright-yellow)"
+renamed     = "[◎◦](italic bright-blue)"
+deleted     = "[✕](italic red)"
+conflicted  = "[◪◦](italic bright-magenta)"
+stashed     = "[◃◈](italic white)"
+
+# ── Métricas (líneas añadidas/eliminadas) ─────────────────────────────────────
+[git_metrics]
+format           = '([▴$added]($added_style))([▿$deleted]($deleted_style))'
+added_style      = "italic dimmed green"
+deleted_style    = "italic dimmed red"
+ignore_submodules = true
+disabled         = false
+
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+#  TIEMPO Y SISTEMA
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+# ── Duración del último comando ───────────────────────────────────────────────
+[cmd_duration]
+min_time = 0   # 0 = siempre visible; ponlo en 2000 para solo mostrar si >2s
+format   = "[◄ $duration ](italic white)"
+
+# ── Hora actual ───────────────────────────────────────────────────────────────
+[time]
+format          = "[ $time]($style)"
+time_format     = "%R"
+utc_time_offset = "local"
+style           = "italic dimmed white"
+disabled        = false
+
+# ── Batería ───────────────────────────────────────────────────────────────────
+[battery]
+format            = "[ $percentage $symbol]($style)"
+full_symbol       = "█"
+charging_symbol   = "[↑](italic bold green)"
+discharging_symbol = "↓"
+unknown_symbol    = "░"
+empty_symbol      = "▃"
+
+[[battery.display]]   # crítico  (<20%)
+threshold = 20
+style     = "italic bold red"
+
+[[battery.display]]   # bajo     (<60%)
+threshold = 60
+style     = "italic dimmed bright-purple"
+
+[[battery.display]]   # medio    (<70%)
+threshold = 70
+style     = "italic dimmed yellow"
+
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+#  LENGUAJES Y HERRAMIENTAS
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+[nodejs]
+format          = " [node](italic) [◫ ($version)](bold bright-green)"
+version_format  = "${raw}"
+detect_files    = ["package-lock.json", "yarn.lock"]
+detect_folders  = ["node_modules"]
+detect_extensions = []
+
+[python]
+format         = " [py](italic) [${symbol}${version}]($style)"
+symbol         = "[⌉](bold bright-blue)⌊ "
+version_format = "${raw}"
+style          = "bold bright-yellow"
+
+[rust]
+format         = " [rs](italic) [$symbol$version]($style)"
+symbol         = "⊃ "
+version_format = "${raw}"
+style          = "bold red"
+
+[golang]
+format         = " go [$symbol($version )]($style)"
+symbol         = "∩ "
+
+[lua]
+format         = " [lua](italic) [${symbol}${version}]($style)"
+symbol         = "⨀ "
+version_format = "${raw}"
+style          = "bold bright-yellow"
+
+[ruby]
+format         = " [rb](italic) [${symbol}${version}]($style)"
+symbol         = "◆ "
+version_format = "${raw}"
+style          = "bold red"
+
+[swift]
+format         = " [sw](italic) [${symbol}${version}]($style)"
+symbol         = "◁ "
+version_format = "${raw}"
+style          = "bold bright-red"
+
+[java]
+format = " java [${symbol}(${version} )]($style)"
+symbol = "∪ "
+
+[deno]
+format         = " [deno](italic) [∫ $version](green bold)"
+version_format = "${raw}"
+
+[dart]
+format = " dart [$symbol($version )]($style)"
+symbol = "◁◅ "
+
+[elixir]
+format = " exs [$symbol $version OTP $otp_version ]($style)"
+symbol = "△ "
+
+[elm]
+format = " elm [$symbol($version )]($style)"
+symbol = "◩ "
+
+[haskell]
+format = " hs [$symbol($version )]($style)"
+symbol = "❯λ "
+
+[julia]
+format = " jl [$symbol($version )]($style)"
+symbol = "◎ "
+
+[nim]
+format = " nim [$symbol($version )]($style)"
+symbol = "▴▲▴ "
+
+[c]
+format = " [$symbol($version(-$name))]($style)"
+symbol = "ℂ "
+
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+#  ENTORNOS Y CONTENEDORES
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+[docker_context]
+format = " docker [$symbol$context]($style)"
+symbol = "◧ "
+
+[conda]
+format = " conda [$symbol$environment]($style)"
+symbol = "◯ "
+
+[nix_shell]
+format     = '[$symbol nix⎪$state⎪]($style) [$name](italic dimmed white)'
+symbol     = "✶"
+style      = "bold italic dimmed blue"
+impure_msg = "[⌽](bold dimmed red)"
+pure_msg   = "[⌾](bold dimmed green)"
+unknown_msg = "[◌](bold dimmed yellow)"
+
+[memory_usage]
+format = " mem [${ram}( ${swap})]($style)"
+symbol = "▪▫▪ "
+
+[package]
+format = " [pkg](italic dimmed) [$symbol$version]($style)"
+symbol = "◨ "
+style  = "dimmed yellow italic bold"
+version_format = "${raw}"
+
+[buf]
+format = " [buf](italic) [$symbol $version $buf_version]($style)"
+symbol = "■ "
+
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+#  CLOUD (desactivado por defecto)
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+[aws]
+format   = " [aws](italic) [$symbol $profile $region]($style)"
+symbol   = "▲ "
+style    = "bold blue"
+disabled = true   # activa con: disabled = false
+
+[spack]
+format = " spack [$symbol$environment]($style)"
+symbol = "◇ "
