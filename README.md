@@ -71,6 +71,8 @@ Y por ultimo reinicia para que se apliquen los cambios.
 * sddm-silent-theme
 * nwg-look
 * noto-fonts && noto-fonts-emoji
+* Zoxide (alternativa a cd)
+* tldr (alternativa a man)
 
 
 ## Importantisimo
