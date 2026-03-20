@@ -64,7 +64,8 @@ Y por ultimo reinicia para que se apliquen los cambios.
 
 
 ## Opcional
-* VSCodium
+* vscodium
+* brave-bin
 * openrgb
 * zip && upzip
 * sddm-silent-theme
