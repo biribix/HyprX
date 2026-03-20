@@ -73,6 +73,7 @@ Y por ultimo reinicia para que se apliquen los cambios.
 * noto-fonts && noto-fonts-emoji
 * Zoxide (alternativa a cd)
 * tldr (alternativa a man)
+* github-desktop-bin
 
 
 ## Importantisimo
