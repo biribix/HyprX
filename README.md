@@ -34,6 +34,8 @@ fish install.fish
 * playerctl
 * nautilus
 
+* hyprmod-git
+
 ### Drivers para NVIDIA GPUs
 ```
 sudo pacman -S linux-headers nvidia-dkms nvidia-settings nvidia-utils lib32-nvidia-utils amd-ucode intel-ucode
