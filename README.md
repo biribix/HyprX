@@ -3,10 +3,6 @@ Mi propia configuracion de Hyprland para ArchLinux
 
 _Es necesario tener fish y grub instalado previamente_
 
-## Instalacion automatica
-chmod +x install.fish<br>
-fish install.fish
-
 ## Dependencias
 * base && base-devel
 * grub
